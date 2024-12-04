@@ -1,0 +1,7 @@
+{
+  "name": "TravelPoint",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
