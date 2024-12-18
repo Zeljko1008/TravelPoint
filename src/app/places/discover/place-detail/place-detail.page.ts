@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Place } from 'src/app/_models/place';
 import { PlacesService } from 'src/app/_services/places.service';
 import { CreateBookingComponent } from 'src/app/bookings/create-booking/create-booking.component';
@@ -10,9 +11,11 @@ import { CreateBookingComponent } from 'src/app/bookings/create-booking/create-b
   templateUrl: './place-detail.page.html',
   styleUrls: ['./place-detail.page.scss'],
 })
-export class PlaceDetailPage implements OnInit {
+export class PlaceDetailPage implements OnInit, OnDestroy {
 
   place?: Place;
+  private placesSub: Subscription = new Subscription();
+
 
   constructor(
     private navCtrl: NavController,
@@ -31,7 +34,9 @@ export class PlaceDetailPage implements OnInit {
       }
       const placeId = paramMap.get('placeId');
       if (placeId) {
-        this.place = this.placesService.getPlace(placeId);
+        this.placesSub = this.placesService.getPlace(placeId).subscribe(place => {
+          this.place = place;
+        });
       }
 
 
@@ -72,11 +77,24 @@ export class PlaceDetailPage implements OnInit {
 
   }
   openBookingModal(mode: 'select' | 'random') {
+    if (!this.place) {
+      console.error('Place not available');
+      return;
+    }
+    const startDate = '';
+  const endDate = '';
+
+
     console.log(mode);
     this.modalCtrl
     .create({
       component: CreateBookingComponent,
-      componentProps: { selectedPlace: this.place }
+      componentProps: {
+        selectedPlace: this.place,
+        selectedMode: mode ,
+        startDate: startDate,
+        endDate: endDate
+      }
     })
     .then(modalEl => {
       modalEl.present();
@@ -90,6 +108,12 @@ export class PlaceDetailPage implements OnInit {
       });
 
 }
+
+  ngOnDestroy(): void {
+    if (this.placesSub) {
+      this.placesSub.unsubscribe();
+    }
+  }
 }
 
 

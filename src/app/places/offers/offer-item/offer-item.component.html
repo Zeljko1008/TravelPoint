@@ -1,20 +1,21 @@
 <ion-item
-        *ngIf="offer"
-        [routerLink]="['/', 'places', 'tabs', 'offers', offer.id]"
+        *ngIf="offerItem"
+        [routerLink]="['/', 'places', 'tabs', 'offers', offerItem.id]"
         detail="true"
          >
           <ion-thumbnail slot="start">
-            <ion-img [src]="offer.imageUrl"></ion-img>
+            <ion-img [src]="offerItem.imageUrl"></ion-img>
 
           </ion-thumbnail>
           <ion-label class="offers-data" >
-            <h1>{{offer.title}}</h1>
+            <h1>{{offerItem.title}}</h1>
+            <h2>{{offerItem.description}}</h2>
             <div class="offers-details">
               <ion-icon name="calendar" color="primary" ></ion-icon>
-              <ion-text color="secondary" class="space-left" >{{getDummyDate() | date}}</ion-text>
+              <ion-text color="secondary" class="space-left" >{{offerItem.availableFrom| date}}</ion-text>
               <span class="space-left">to</span>
               <ion-icon name="calendar" class="space-left" color="primary"></ion-icon>
-              <ion-text color="secondary" class="space-left">{{getDummyDate() | date}}</ion-text>
+              <ion-text color="secondary" class="space-left">{{offerItem.availableTo| date}}</ion-text>
              </div>
           </ion-label>
 

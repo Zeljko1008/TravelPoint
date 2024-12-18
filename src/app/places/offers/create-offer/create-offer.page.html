@@ -3,9 +3,9 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/places/tabs/offers"></ion-back-button>
     </ion-buttons>
-    <ion-title>News offer</ion-title>
+    <ion-title>New offer</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onCreateOffer()">
+      <ion-button (click)="onCreateOffer()" [disabled]="!form.valid">
         <ion-icon slot="icon-only" name="checkmark"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -21,6 +21,8 @@
           <ion-label position="floating">Title</ion-label>
           <ion-input
                type="text"
+
+               id="title-input"
                autocomplete="true"
                autocorrect="true"
                formControlName="title"
@@ -41,6 +43,8 @@
         <ion-item>
           <ion-label position="floating">Short description</ion-label>
           <ion-input
+
+               id="description-input"
                type="text"
                formControlName="description"
           ></ion-input>
@@ -58,7 +62,7 @@
       <ion-col sizeSm="6" offsetSm="3">
         <ion-item>
           <ion-label position="floating">Price</ion-label>
-          <ion-input type="number" formControlName="price" ></ion-input>
+          <ion-input type="number" formControlName="price"  id="price-input"></ion-input>
         </ion-item>
         <ion-row *ngIf="!form.get('price')?.valid && form.get('price')?.touched" >
 
@@ -70,47 +74,68 @@
     </ion-row>
 
 
-    <ion-row >
+    <ion-row>
       <ion-col class="ion-text-center" sizeSm="6" offsetSm="3">
-        <ion-label >Available from</ion-label >
-        <ion-item >
+    <ion-label>Available from</ion-label>
+    <div style="display: flex; justify-content: center;">
+    <ion-item  (click)="openFromDateModal()">
+      <ion-button color="secondary-contrast" size="large" *ngIf="!selectedFromDate">
+        <ion-icon slot="icon-only" color="primary" name="calendar-outline"></ion-icon>
+       </ion-button>
+      <ion-button class="date-btn" color="secondary-contrast" *ngIf="selectedFromDate">
+        {{ selectedFromDate }}
+      </ion-button>
+    </ion-item>
+    </div>
 
-          <ion-datetime-button datetime="fromDate"></ion-datetime-button>
-          <ion-modal   [keepContentsMounted]="true">
-            <ng-template>
-              <ion-datetime
-                     formControlName="dateFrom"
-                     [showDefaultButtons]="true"
-                     id="fromDate"
-                     min="2018-01-01"
-                     max="2026-12-31"
-                    ></ion-datetime>
-            </ng-template>
-          </ion-modal>
-        </ion-item>
+    <ion-modal [isOpen]="isFromDateModalOpen" (didDismiss)="closeFromDateModal()">
+      <ng-template>
+        <ion-datetime
+          formControlName="dateFrom"
+          [showDefaultButtons]="true"
+          (ionChange)="onFromDateSelected($event)"
+          min="2018-01-01"
+          max="2026-12-31">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-col>
+  <ion-col class="ion-text-center" sizeSm="6" offsetSm="3">
+    <ion-label>Available to</ion-label>
+    <div style="display: flex; justify-content: center;">
+    <ion-item  (click)="openToDateModal()">
+      <ion-button color="secondary-contrast" size="large" *ngIf="!selectedToDate">
+        <ion-icon slot="icon-only" color="primary" name="calendar-outline"></ion-icon>
+      </ion-button>
+      <ion-button class="date-btn" color="secondary-contrast"  *ngIf="selectedToDate">
+        {{ selectedToDate }}
+      </ion-button>
+    </ion-item>
+    </div>
 
-
-      </ion-col>
-      <ion-col class="ion-text-center" sizeSm="6" offsetSm="3">
-        <ion-label>Available to</ion-label>
-        <ion-item>
-
-          <ion-datetime-button datetime="toDate"></ion-datetime-button>
-          <ion-modal [keepContentsMounted]="true">
-            <ng-template>
-              <ion-datetime
-                  formControlName="dateTo"
-                  [showDefaultButtons]="true"
-                  id="toDate"
-                  min="2019-01-01"
-                  max="2027-12-31"
-                ></ion-datetime>
-            </ng-template>
-          </ion-modal>
-        </ion-item>
-
-      </ion-col>
+    <ion-modal [isOpen]="isToDateModalOpen" (didDismiss)="closeToDateModal()">
+      <ng-template>
+        <ion-datetime
+          formControlName="dateTo"
+          [showDefaultButtons]="true"
+          (ionChange)="onToDateSelected($event)"
+          min="2019-01-01"
+          max="2027-12-31">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-col>
     </ion-row>
+    <ion-row *ngIf="!form.get('dateFrom')?.valid && form.get('dateFrom')?.touched" >
+
+      <p class="validation">Date Available from is required!</p>
+
+  </ion-row>
+  <ion-row *ngIf="!form.get('dateTo')?.valid && form.get('dateTo')?.touched" >
+
+    <p class="validation">Date Available to is required!</p>
+
+</ion-row>
     </ion-grid>
   </form>
 </ion-content>
