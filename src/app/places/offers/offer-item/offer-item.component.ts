@@ -7,20 +7,14 @@ import { Place } from 'src/app/_models/place';
   templateUrl: './offer-item.component.html',
   styleUrls: ['./offer-item.component.scss'],
 })
-export class OfferItemComponent  implements OnInit {
+export class OfferItemComponent  {
 
-  @Input() offer?: Place;
+  @Input() offerItem?: Place;
 
   constructor(
     private router:Router
   ) { }
 
-  ngOnInit() {
 
-    console.log('offer item');
-  }
-  getDummyDate(){
-    return new Date();
-  }
 
 }

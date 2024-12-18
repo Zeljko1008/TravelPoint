@@ -1,16 +1,54 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar *ngIf="(place)">
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="'places/tabs/offers/'+ place.id"></ion-back-button>
     </ion-buttons>
     <ion-title>Edit Offer</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onUpdateOffer()" [disabled]="!form.valid">
+        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">edit-offer</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <form [formGroup]="form">
+  <ion-grid >
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3">
+        <ion-item>
+          <ion-label position="floating">Title</ion-label>
+          <ion-input
+               type="text"
+
+               id="title-input"
+               autocomplete="true"
+               autocorrect="true"
+               formControlName="title"
+               ></ion-input>
+        </ion-item>
+        <ion-row *ngIf="!form.get('title')?.valid && form.get('title')?.touched" >
+            <p class="validation">Title is required!</p>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+     <ion-row>
+      <ion-col sizeSm="6" offsetSm="3">
+        <ion-item>
+          <ion-label position="floating">Short description</ion-label>
+          <ion-input
+
+               id="description-input"
+               type="text"
+               formControlName="description"
+          ></ion-input>
+        </ion-item>
+    <ion-row *ngIf="!form.get('description')?.valid && form.get('description')?.touched" >
+        <p class="validation">Description must be 1-180</p>
+    </ion-row>
+    </ion-col>
+    </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>
