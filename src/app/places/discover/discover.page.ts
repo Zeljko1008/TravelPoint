@@ -4,6 +4,7 @@ import { PlacesService } from 'src/app/_services/places.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { SegmentChangeEventDetail } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/_services/auth.service';
 
 
 @Component({
@@ -15,11 +16,14 @@ export class DiscoverPage implements OnInit, OnDestroy{
 
   loadedPlaces?: Place[];
   listedLoadedPlaces?: Place[];
+  relevantPlaces?: Place[] = [];
   private placesSub: Subscription = new Subscription();
+  isLoading = false;
 
   constructor(
 
-    private placesService: PlacesService
+    private placesService: PlacesService,
+    private authService: AuthService,
   ) { }
 
 
@@ -27,12 +31,25 @@ export class DiscoverPage implements OnInit, OnDestroy{
 
     this.placesSub= this.placesService.places.subscribe(places => {
       this.loadedPlaces = places;
-      this.listedLoadedPlaces = this.loadedPlaces.slice(1);
+      this.relevantPlaces = this.loadedPlaces;
+      this.listedLoadedPlaces = this.relevantPlaces.slice(1);
     })
+  }
+  ionViewWillEnter() {
+  this.isLoading = true;
+    this.placesService.fetchPlaces().subscribe(()=>{
+      this.isLoading = false;
+    });
   }
 
   onFilterUpdate(event: CustomEvent<SegmentChangeEventDetail>) {
-    console.log(event.detail);
+   if (event.detail.value === 'all') {
+     this.relevantPlaces = this.loadedPlaces;
+     this.listedLoadedPlaces = this.relevantPlaces?.slice(1);
+   } else {
+      this.relevantPlaces = this.loadedPlaces?.filter(place => place.userId !== this.authService.userId);
+      this.listedLoadedPlaces = this.relevantPlaces?.slice(1);
+    }
   }
 
   ngOnDestroy(): void {

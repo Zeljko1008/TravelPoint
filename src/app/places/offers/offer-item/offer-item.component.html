@@ -1,8 +1,4 @@
-<ion-item
-        *ngIf="offerItem"
-        [routerLink]="['/', 'places', 'tabs', 'offers', offerItem.id]"
-        detail="true"
-         >
+<ion-item *ngIf="offerItem">
           <ion-thumbnail slot="start">
             <ion-img [src]="offerItem.imageUrl"></ion-img>
 

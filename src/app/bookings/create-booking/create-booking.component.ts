@@ -69,7 +69,7 @@ const availableTo = this.selectedPlace?.availableTo ?? new Date();
         bookingData: {
           firstName: this.form?.value['first-name'],
           lastName: this.form?.value['last-name'],
-          guestNumber: this.form?.value['guest-number'],
+          guestNumber: +this.form?.value['guest-number'],
           startDate: new Date(this.form?.value['date-from']),
           endDate: new Date(this.form?.value['date-to'])
         }
