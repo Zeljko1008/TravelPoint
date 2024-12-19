@@ -13,7 +13,7 @@ import { PlacesService } from 'src/app/_services/places.service';
 export class OffersPage implements OnInit, OnDestroy{
 
 
-
+  isLoading = false;
   offers?: Place[];
   private placesSub: Subscription = new Subscription();
   constructor(
@@ -27,6 +27,15 @@ export class OffersPage implements OnInit, OnDestroy{
      this.placesSub= this.placesService.places.subscribe(places => {
       this.offers = places;
     });
+    }
+    ionViewWillEnter() {
+      this.isLoading = true;
+      this.placesService.fetchPlaces().subscribe(()=>{
+        this.isLoading = false;
+
+      });
+
+
     }
 
 
