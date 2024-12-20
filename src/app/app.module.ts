@@ -12,7 +12,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule ,  IonicModule.forRoot(), AppRoutingModule, ScrollingModule, FormsModule],
+  imports: [BrowserModule ,  IonicModule.forRoot(), AppRoutingModule, ScrollingModule, FormsModule ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     provideHttpClient( withInterceptorsFromDi())
   ],

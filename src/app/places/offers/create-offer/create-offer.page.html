@@ -136,6 +136,12 @@
     <p class="validation">Date Available to is required!</p>
 
 </ion-row>
+    <ion-row>
+      <ion-col>
+        <app-location-picker (locationPick)="onLocationPicked($event)" ></app-location-picker>
+      </ion-col>
+    </ion-row>
+
     </ion-grid>
   </form>
 </ion-content>
